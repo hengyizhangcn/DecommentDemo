@@ -21,6 +21,9 @@
 #import "SCResumeLibraryViewController.h"
 #import "SCEnterpriseHunterContainerViewController.h"
 #import "SCEnterpriseServiceAdministrationViewController.h"
+/**
+ 这是一个测试
+ */
 @interface SCEnterpriseServiceKindsCell () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
@@ -140,7 +143,8 @@
         SCBankLoanViewController *bankLoanVc = [[SCBankLoanViewController alloc]init];
         bankLoanVc.isCompanyLoan  = YES;
         [self.currentNavigationController pushViewController:bankLoanVc animated:true];
-    } else if (indexPath.row == 13) { //企业理财
+    } else if (indexPath.row == 13) { 
+    //企业理财
         SCBankLoanViewController *bankLoanVc = [[SCBankLoanViewController alloc]init];
         [self.currentNavigationController pushViewController:bankLoanVc animated:true];
     }

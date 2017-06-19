@@ -35,17 +35,17 @@ const int LINESIZE=8192;
 
 /** C++状态 */
 enum cpp_state_e {
-    BLANK,				// space 空格
-    IDNAME,				// identifier or reserved-word  识别码和保留字
-    PAREN,				// parenthesis. "[", "]", "{", "}", "(", ")" 括号，包括中、大、小
-    SEPARATOR,			// separator or char/string closer. ",", ";", "'", """ 分隔符和字符及字符串结束符
-    OPERATOR,			// operator or others. "=", "==", "+", "+=", "++", ... 操作符或其它
-    CPP_COMMENT,		// C++ single comment. "//..." //单行注释
-    C_COMMENT,			// C comment block.    "/* ... */" //块注释
-    STRING_CONSTANT,	// string constant. ""..."" //字符串常量
-    CHAR_CONSTANT,		// char constant.   "'...'" //字符常量
-    STRING_ESCAPE,		// after "\" in string constant. //在字符串中的，在\之后的空格
-    CHAR_ESCAPE,		// after "\" in char constant. //在字符常量中的，在\之后的空格
+    BLANK,              // space 空格
+    IDNAME,             // identifier or reserved-word  识别码和保留字
+    PAREN,              // parenthesis. "[", "]", "{", "}", "(", ")" 括号，包括中、大、小
+    SEPARATOR,          // separator or char/string closer. ",", ";", "'", """ 分隔符和字符及字符串结束符
+    OPERATOR,           // operator or others. "=", "==", "+", "+=", "++", ... 操作符或其它
+    CPP_COMMENT,        // C++ single comment. "//..." //单行注释
+    C_COMMENT,          // C comment block.    "/* ... */" //块注释
+    STRING_CONSTANT,    // string constant. ""..."" //字符串常量
+    CHAR_CONSTANT,      // char constant.   "'...'" //字符常量
+    STRING_ESCAPE,      // after "\" in string constant. //在字符串中的，在\之后的空格
+    CHAR_ESCAPE,        // after "\" in char constant. //在字符常量中的，在\之后的空格
 };
 
 //........................................................................
@@ -146,7 +146,7 @@ int readFileList(const char *basePath)
         else if(ptr->d_type == 8)    ///file
         {
             
-            char myfname[_MAX_PATH+100];	// 扩展100个字符
+            char myfname[_MAX_PATH+100];    // 扩展100个字符
             strcpy(myfname, basePath);
             strcat(myfname, "/");
             strcat(myfname, ptr->d_name);
@@ -177,7 +177,7 @@ int readFileList(const char *basePath)
 //获取文件的扩展名
 char *getExtension(const char *path)
 {
-    char myPath[_MAX_PATH+100];	// 扩展100个字符
+    char myPath[_MAX_PATH+100]; // 扩展100个字符
     strcpy(myPath, path);
     char *ext=strrchr(myPath,'.');
     if (ext)
@@ -227,7 +227,7 @@ void DecommentLine(const char* fname, int line, cpp_state_e& state, char* d, con
                 // 因为下一行也是相同的评论、没有问题的地方合并。因此，忽视。
             }
             else {
-                *d++ = c;	// c='\\'
+                *d++ = c;   // c='\\'
             }
             
             ++s; continue; // 行末尾记号'\n'前进到下一个(可能字符串结束)
@@ -386,7 +386,7 @@ void DecommentLine(const char* fname, int line, cpp_state_e& state, char* d, con
     }//.endwhile s
     *d = '\0';
     if (state == CPP_COMMENT)
-        state = BLANK;	// 安全策略.
+        state = BLANK;  // 安全策略.
 }
 
 
@@ -447,7 +447,7 @@ FILE* OpenInput(const char* fname)
  */
 FILE* OpenOutput(const char* inputfname, const char* extname)
 {
-    char fname[_MAX_PATH+100];	// 扩展100个字符
+    char fname[_MAX_PATH+100];  // 扩展100个字符
     if (gOutDir) {
 #ifdef _WIN32
         char base[_MAX_PATH];
@@ -517,7 +517,7 @@ void DecommentMain(const char* fname)
     
     
     
-    char myfname[_MAX_PATH+100];	// 扩展100个字符
+    char myfname[_MAX_PATH+100];    // 扩展100个字符
     strcpy(myfname, fname);
     strcat(myfname, ".decomment");
     
@@ -596,7 +596,7 @@ int main(int argc, char* argv[])
             do {
                 switch (*sw) {
                     case 'h': case '?':
-                    show_help:			error_abort(gUsage2);
+                    show_help:          error_abort(gUsage2);
                         break;
                     case 'b': //保持空行
                         gIsKeepBlankLine = true;

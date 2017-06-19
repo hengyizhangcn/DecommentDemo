@@ -63,7 +63,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-i /Users/zhy/Documents/&#x5220;&#x9664;&#x6ce8;&#x91ca;/Test"
+            argument = "-i /Users/zhy/Documents/github/DecommentDemo/Test"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
