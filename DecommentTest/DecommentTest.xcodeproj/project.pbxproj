@@ -251,6 +251,7 @@
 				990FEF7F1EF7A21200E9056E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

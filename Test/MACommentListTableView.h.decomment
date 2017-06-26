@@ -1,16 +1,7 @@
 
-
-
-
-
-
-
-
 #import <UIKit/UIKit.h>
 
 @protocol MAScrollViewDelegate <NSObject>
-
-
 
 - (BOOL)MAScrollViewDistance:(CGFloat)distance upOrDown:(BOOL)upOrDown;
 

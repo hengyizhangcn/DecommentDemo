@@ -398,6 +398,7 @@ void DecommentFile(const char* fname, FILE* fin, FILE* fout)
     char line[LINESIZE];
     cpp_state_e cppState = BLANK;
     
+    char lastLine[LINESIZE];
     for (int i = 0; fgets(buf, sizeof(buf), fin) != NULL; ++i) { //fgets每次从文件中读取一行，下次读取会沿着上次的行数往下读取
         char* s = buf;
         if (gIsKeepIndent) {
@@ -418,7 +419,14 @@ void DecommentFile(const char* fname, FILE* fin, FILE* fout)
             fprintf(fout, "%07d:", i+1);
         if (buf < s)
             fwrite(buf, 1, s - buf, fout); // indent
-        fputs(line, fout); // decommented line，向目录文件输入已经处理过的该行
+        
+        if (*lastLine == '\n' && *line == '\n') {
+            //
+        } else {
+            fputs(line, fout); // decommented line，向目录文件输入已经处理过的该行
+        }
+        *lastLine = *line;
+        
         
         if (cppState != C_COMMENT) {
 //            putc('\n', fout);

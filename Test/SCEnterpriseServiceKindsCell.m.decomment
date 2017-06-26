@@ -1,11 +1,4 @@
 
-
-
-
-
-
-
-
 #import "SCEnterpriseServiceKindsCell.h"
 #import "SCEnterpriseServiceCollectionViewCell.h"
 #import "SCApplyListViewController.h"
