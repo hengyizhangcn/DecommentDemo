@@ -79,7 +79,7 @@ const char* gUsage  = "usage :decomment [-h?biqnsr] [-d<DIR>] file1.cpp file2.cp
 
 /** detail help-message for options and version */
 const char* gUsage2 =
-"  version: 1.9\n"
+"  version: 2.0\n"
 "  -h -?      this help\n"
 "  -b         keep blank line\n"
 "  -i         keep indent spaces\n"
@@ -147,9 +147,12 @@ int readFileList(const char *basePath)
         {
             
             char myfname[_MAX_PATH+100];	// 扩展100个字符
-            strcpy(myfname, basePath);
-            strcat(myfname, "/");
-            strcat(myfname, ptr->d_name);
+//            strcpy(myfname, basePath);
+            strlcpy(myfname, basePath, sizeof(myfname));
+//            strcat(myfname, "/");
+            strlcat(myfname, "/", sizeof(myfname));
+//            strcat(myfname, ptr->d_name);
+            strlcat(myfname, ptr->d_name, sizeof(myfname));
             
             char *extension = getExtension(myfname);
             
@@ -164,9 +167,12 @@ int readFileList(const char *basePath)
         else if(ptr->d_type == 4)    ///dir
         {
             memset(base,'\0',sizeof(base));
-            strcpy(base,basePath);
-            strcat(base,"/");
-            strcat(base,ptr->d_name);
+//            strcpy(base,basePath);
+            strlcpy(base, basePath, sizeof(base));
+//            strcat(base,"/");
+            strlcat(base, "/", sizeof(base));
+//            strcat(base,ptr->d_name);
+            strlcat(base, ptr->d_name, sizeof(base));
             readFileList(base);
         }
     }
@@ -178,7 +184,8 @@ int readFileList(const char *basePath)
 char *getExtension(const char *path)
 {
     char myPath[_MAX_PATH+100];	// 扩展100个字符
-    strcpy(myPath, path);
+//    strcpy(myPath, path);
+    strlcpy(myPath, path, sizeof(myPath));
     char *ext=strrchr(myPath,'.');
     if (ext)
     {
@@ -420,10 +427,16 @@ void DecommentFile(const char* fname, FILE* fin, FILE* fout)
         if (buf < s)
             fwrite(buf, 1, s - buf, fout); // indent
         
-        if (*lastLine == '\n' && *line == '\n') {
+//        if (*lastLine == '\n' && *line == '\n') {
+        if (*line == '\n') {
             //
         } else {
             fputs(line, fout); // decommented line，向目录文件输入已经处理过的该行
+            
+            //把文件夹下的文件代码合并到一个文件中去
+            FILE* fp = fopen("mergedContent.text", "a+");
+            fputs(line, fp);
+            fclose(fp);
         }
         *lastLine = *line;
         
@@ -464,14 +477,17 @@ FILE* OpenOutput(const char* inputfname, const char* extname)
         _makepath(fname, NULL, gOutDir, base, ext);
 #else // may be UNIX
         char input[_MAX_PATH];
-        strcpy(input, inputfname);
+//        strcpy(input, inputfname);
+        strlcpy(input, inputfname, sizeof(input));
         snprintf(fname, _MAX_PATH, "%s/%s", gOutDir, basename(input));
 #endif
     }
     else {
-        strcpy(fname, inputfname);
+//        strcpy(fname, inputfname);
+        strlcpy(fname, inputfname, sizeof(fname));
     }
-    strcat(fname, extname);
+//    strcat(fname, extname);
+    strlcat(fname, extname, sizeof(fname));
     
     FILE* fp = fopen(fname, "w");
     if (fp == NULL) {
@@ -526,10 +542,12 @@ void DecommentMain(const char* fname)
     
     
     char myfname[_MAX_PATH+100];	// 扩展100个字符
-    strcpy(myfname, fname);
-    strcat(myfname, ".decomment");
+//    strcpy(myfname, fname); strcpy不安全
+    strlcpy(myfname, fname, sizeof(myfname));
+//    strcat(myfname, ".decomment"); strcat不安全
+    strlcat(myfname, ".decomment", sizeof(myfname));
     
-    //    rename(myfname, fname);
+        rename(myfname, fname);
 }
 
 //------------------------------------------------------------------------
@@ -577,9 +595,12 @@ void DecommentWildMain(const char* fname)
                 if (strequ(find.name, ".") || strequ(find.name, ".."))
                     continue;
                 _makepath(path, drv, dir, find.name, NULL);
-                strcat(path, "\\");
-                strcat(path, base);
-                strcat(path, ext);
+//                strcat(path, "\\");
+                strlcat(path, "\\", sizeof(path));
+//                strcat(path, base);
+                strlcat(path, base, sizeof(path));
+//                strcat(path, ext);
+                strlcat(path, ext, sizeof(path));
                 // fprintf(stderr, "decomment recursive: %s\n", path);
                 DecommentWildMain(path); // 递归调用.
             } while (_findnext(h, &find) == 0);
